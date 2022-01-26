@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="container" alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hi.verkefni.vidmot.BingoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Button fx:id="byrja" contentDisplay="CENTER" maxHeight="200.0" maxWidth="250.0" minHeight="200.0" minWidth="250.0" mnemonicParsing="false" onAction="#handle" prefHeight="200.0" prefWidth="250.0" text="Byrja leik!" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+            <font>
+                <Font size="50.0" />
+            </font>
+        </Button>
+    </children>
+</VBox>
