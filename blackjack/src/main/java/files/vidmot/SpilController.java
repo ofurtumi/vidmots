@@ -30,10 +30,10 @@ public class SpilController implements Initializable{
     public void draw() {
         bj.dragaSpil(p,d);
         showHands();
-        if (bj.isLastRound()) {
-            holder.lookup("#playerButton").setDisable(true);
-            holder.lookup("#startButton").setDisable(false);
+        if (bj.isLastRound() || bj.ehvBuinn(p, d)) {
+            baraGodur();
         }
+
     }
 
     public void showHands() {
@@ -45,7 +45,7 @@ public class SpilController implements Initializable{
         Button doneB = (Button)holder.lookup("#doneButton");
 
         holder.getChildren().removeAll(playerB,doneB);
-        bj.isDealerDone(d);
+        bj.isDealerDone(d,p);
         showHands();
         Label winLabel = new Label();
         System.out.println(p.hvorVann(d));

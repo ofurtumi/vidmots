@@ -16,6 +16,11 @@ public class Blackjack {
         if(d.getSamtals() < 17) d.gefaSpil(stokkur.dragaSpil());
     }
 
+    public boolean ehvBuinn(Leikmadur p, Leikmadur d) {
+        if (p.getSamtals() >= 21 || d.getSamtals() > 21) return true;
+        return false;
+    }
+
     public void newRound() {
         round++;
     }
@@ -25,7 +30,9 @@ public class Blackjack {
         else return false;
     }
 
-    public void isDealerDone(Leikmadur d) {
-        while (d.getSamtals() < 17) d.gefaSpil(stokkur.dragaSpil());;
+    public void isDealerDone(Leikmadur d, Leikmadur p) {
+        if (p.getSamtals() <= 21) {
+            while (d.getSamtals() < 17) d.gefaSpil(stokkur.dragaSpil());;
+        } 
     }
 }

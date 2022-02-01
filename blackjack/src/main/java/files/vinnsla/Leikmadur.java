@@ -6,6 +6,7 @@ public class Leikmadur implements LeikmadurInterface{
     private int total;
     private SpilV[] hand = new SpilV[5];
     private int nHand;
+    private int wins;
 
     public Leikmadur(String n) {
         name = n;
@@ -31,6 +32,14 @@ public class Leikmadur implements LeikmadurInterface{
     public boolean vinnurDealer(Leikmadur d) {
         if (total < d.getSamtals()) return true;
         return false;
+    }
+
+    public void won() {
+        wins++;
+    }
+
+    public int getWins() {
+        return wins;
     }
 
     public Leikmadur hvorVann(Leikmadur d) {
