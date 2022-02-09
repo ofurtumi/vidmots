@@ -1,19 +1,27 @@
 package files.vinnsla;
 import java.util.Arrays;
 
+import files.vidmot.Spil;
+
 public class Leikmadur implements LeikmadurInterface{
     private String name;
     private int total;
     private SpilV[] hand = new SpilV[5];
     private int nHand;
     private int wins;
+    private int index;
 
-    public Leikmadur(String n) {
+    public Leikmadur(String n, int i) {
         name = n;
+        index = i;
     }
 
     public int getSamtals() {
         return total;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public String getNafn() {
@@ -40,6 +48,18 @@ public class Leikmadur implements LeikmadurInterface{
 
     public int getWins() {
         return wins;
+    }
+
+    public String handToString() {
+        String hendi = "";
+        for (SpilV s : hand) {
+            if (s != null) hendi += "\n"+s.toString();
+        }
+        return hendi;
+    }
+
+    public SpilV[] getHand() {
+        return hand;
     }
 
     public Leikmadur hvorVann(Leikmadur d) {

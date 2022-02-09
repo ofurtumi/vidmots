@@ -4,10 +4,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="holder" alignment="CENTER" prefHeight="366.0" prefWidth="626.0" spacing="20.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.SpilController">
+<VBox fx:id="holder" alignment="CENTER" prefHeight="800.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.SpilController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
+   <GridPane fx:id="cardHolder" alignment="CENTER" hgap="10.0" prefHeight="502.0" prefWidth="893.0" vgap="50.0">
+     <columnConstraints>
+         <ColumnConstraints minWidth="75.0" prefWidth="100.0" />
+         <ColumnConstraints minWidth="75" prefWidth="75" />
+         <ColumnConstraints minWidth="75" prefWidth="75" />
+         <ColumnConstraints minWidth="75" prefWidth="75" />
+       <ColumnConstraints minWidth="75" prefWidth="75" />
+       <ColumnConstraints minWidth="75" prefWidth="75" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints minHeight="100.0" prefHeight="100.0" />
+       <RowConstraints minHeight="100.0" prefHeight="100.0" />
+     </rowConstraints>
+      <children>
+         <Label fx:id="playerName" alignment="CENTER" contentDisplay="CENTER" prefHeight="69.0" prefWidth="116.0" text="Player" GridPane.rowIndex="1" />
+         <Label fx:id="dealerName" alignment="CENTER" contentDisplay="CENTER" prefHeight="86.0" prefWidth="118.0" text="Bank" />
+      </children>
+   </GridPane>
 
     <Label fx:id="playerLabel" />
     <Button fx:id="startButton" onAction="#startGame" text="Byrja leik!" />

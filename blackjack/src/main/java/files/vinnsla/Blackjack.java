@@ -35,4 +35,24 @@ public class Blackjack {
             while (d.getSamtals() < 17) d.gefaSpil(stokkur.dragaSpil());;
         } 
     }
+
+    public int tegundToInt(Tegund t) {
+        switch (t) {
+            case HJARTA:
+                return 0;
+
+            case SPADI:
+                return 1;
+
+            case TIGULL:
+                return 2;
+
+            case LAUF:
+                return 3;                
+        
+            default:
+                break;
+            }
+        return -1;
+    }
 }
