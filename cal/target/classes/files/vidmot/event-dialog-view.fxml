@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root type="javafx.scene.control.DialogPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+      <children>
+         <Label fx:id="eventDate" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" prefHeight="63.0" prefWidth="298.0" text="Viðburður" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <ComboBox fx:id="eventStartHour" prefWidth="150.0" promptText="Upphaf viðburðar" visibleRowCount="7" />
+         <GridPane prefHeight="175.0" prefWidth="637.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="310.0" minWidth="10.0" prefWidth="184.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="376.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="147.0" text="Titill">
+                     <font>
+                           <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="87.0" prefWidth="171.0" text="Lýsing" GridPane.rowIndex="1">
+                     <font>
+                           <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="eventTitle" prefHeight="81.0" prefWidth="527.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="eventDescription" prefHeight="129.0" prefWidth="527.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+         </GridPane>
+      </children>
+      </VBox>
+   </content>
+   <ButtonType fx:id="okButton" buttonData="OK_DONE" text="Komið!" />
+   <ButtonType fx:id="neibb" buttonData="CANCEL_CLOSE" text="Hætta við" />
+
+
+</fx:root>

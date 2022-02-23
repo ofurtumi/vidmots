@@ -2,7 +2,7 @@
  * @ Author: Þorvaldur Tumi Baldursson
  * @ Create Time: 2022-02-21 10:28:56
  * @ Modified by: Tumi
- * @ Modified time: 2022-02-21 12:21:56
+ * @ Modified time: 2022-02-23 11:22:50
  */
 
 package files.vinnsla;
@@ -78,6 +78,14 @@ public class Event {
         public int compare(Event thisEvent, Event thatEvent) {
             return Integer.compare(thisEvent.start, thatEvent.start);
         }
+    }
+
+    public String toString() {
+        return " EVENT: {"
+        + this.date
+        + this.start
+        + this.title
+        + this.description+"}";
     }
 
     // public static void main(String[] args) {
