@@ -21,6 +21,8 @@ public class snake extends Rectangle {
         this.setX(250);
         this.setY(250);
         this.pane = p;
+        this.setStyle("-fx-stroke: white; -fx-stroke-width: 3;");
+
 
         onStart();
     }

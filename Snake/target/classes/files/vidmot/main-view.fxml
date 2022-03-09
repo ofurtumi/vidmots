@@ -6,10 +6,9 @@
 
 <!-- <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyListener" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.MainController" /> -->
 
-
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.MainController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.MainController">
    <children>
-      <Label fx:id="startText" alignment="CENTER" contentDisplay="CENTER" layoutY="-1.0" onMouseClicked="#handleButtonAction" prefHeight="500.0" prefWidth="500.0" text="Smelltu á skjáinn til að byrja leik!" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="startText" alignment="CENTER" contentDisplay="CENTER" layoutY="-1.0" onKeyPressed="#handleButtonAction" prefHeight="500.0" prefWidth="500.0" text="Smelltu á skjáinn til að byrja leik!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font size="80.0" />
          </font>

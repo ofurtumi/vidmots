@@ -16,6 +16,7 @@ public class playerSnake extends snake {
         this.setFill(Color.BLUE);
         this.setX(50);
         this.setY(100);
+        this.setStyle("-fx-stroke: white; -fx-stroke-width: 3;");
         snakePieces.add(this);
     }
 
@@ -28,6 +29,7 @@ public class playerSnake extends snake {
         Rectangle piece = snakePieces.get(snakePieces.size() - 1);
         piece.setX(snakePieces.get(snakePieces.size() - 2).getX());
         piece.setY(snakePieces.get(snakePieces.size() - 2).getY());
+        piece.setStyle("-fx-stroke: white; -fx-stroke-width: 3;");
         // pane.getChildren().add(piece);
         return piece;
     }
@@ -40,19 +42,19 @@ public class playerSnake extends snake {
             piece.setRotate(parentRotation);
             switch (parentRotation) {
                 case 0:
-                    piece.setX(parent.getX() - 25);
+                    piece.setX(parent.getX() - 50);
                     piece.setY(parent.getY());
                     break;
                 case 90:
-                    piece.setY(parent.getY() - 25);
+                    piece.setY(parent.getY() - 50);
                     piece.setX(parent.getX());
                     break;
                 case 180:
-                    piece.setX(parent.getX() + 25);
+                    piece.setX(parent.getX() + 50);
                     piece.setY(parent.getY());
                     break;
                 case 270:
-                    piece.setY(parent.getY() + 25);
+                    piece.setY(parent.getY() + 50);
                     piece.setX(parent.getX());
                     break;
                 default:

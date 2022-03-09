@@ -4,36 +4,29 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ResourceBundle;
 
-import files.vinnsla.Tuple;
+import files.vinnsla.Score;
 
-public class MainController implements Initializable {
+public class MainController {
     @FXML
     private Pane pane;
 
     @FXML
     private Label startText;
 
-    private int score;
-    private Label scoreLabel = new Label();
-
-    private ArrayList<Rectangle> snakePieces = new ArrayList<Rectangle>();
+    private Score score = new Score();
+    private Label scoreLabel = new Label(score.getScore());
 
     private Circle foodItem;
     private Bounds foodBounds;
@@ -43,53 +36,53 @@ public class MainController implements Initializable {
 
     private ArrayList<snake> enemies = new ArrayList<snake>();
 
-    // private Scene scene = pane.getScene();
-
     private playerSnake ps;
+    private boolean isDead;
 
+    private int counter = 0;
+
+    /**
+     * handler fyrir startbutton, gefur leikmanni smá tíma til að byrja leikinn
+     * auk þess sem nær í scene sem er nauðsynlegt að hafa í start til að finna
+     * staðsetningu veggjanna
+     * 
+     * @param event músasmell
+     */
     @FXML
     private void handleButtonAction(MouseEvent event) {
-        Scene scene = pane.getScene();
         pane.getChildren().remove(startText);
-        start(scene);
+        start();
     }
 
-    private HashMap<Integer, Tuple> moveMap = new HashMap<Integer, Tuple>();
-
+    /**
+     * býr til tímalínu fyrir "leikja lykkjuna"
+     * endar á að kalla á timeLineController sem er fallið sem
+     * heldur utan um stöðu, [PLAY,PAUSE,STOP], leiksins
+     */
     private void createTimeline() {
         k = new KeyFrame(Duration.millis(50), e -> {
-            // checkSetColor(r);
             addFood();
-
-            // enemies[0].move();
-            for (snake enemy : enemies) {
-                if (enemy == null)
-                    continue;
-                enemy.moveRandom();
-                if (ps.intersects(enemy.getBoundsInParent())) {
-                    // System.out.println("Dead :/ at " + r.getX());
-                    timeLineController(2);
-                }
-            }
-
-            if (ps.intersects(foodBounds)) {
-                pane.getChildren().remove(foodItem);
-                // System.out.println("nammi namm :)~");
-                addTailPiece();
-                pane.getChildren().add(ps.addTailPiece());
-                score++;
-                scoreLabel.setText(Integer.toString(score));
-            }
-
-            ps.move();
-            ps.tailMover();
+            addEnemy();
+            if (enemies.size() > 0)
+                moveEnemies();
+            intersectChecks();
+            movePlayer();
         });
         t = new Timeline(k);
-        t.setCycleCount(999999999);
+        t.setCycleCount(Timeline.INDEFINITE);
 
         timeLineController(1);
     }
 
+    /**
+     * fall sem einfaldar það að pása, spila eða stoppa "leikjalykkjuna"
+     * tekur inn heiltölu 1,2,3
+     * 1, spilar lykkjuna
+     * 2, pásar lykkjuna
+     * 3, stoppar lykkjuna, gerist aðeins við dauða snáksins
+     * 
+     * @param status, heiltala 1,2,3
+     */
     private void timeLineController(int status) {
         // 1 play, 2 pause, 3 stop
         if (status == 1) {
@@ -101,126 +94,110 @@ public class MainController implements Initializable {
         }
     }
 
-    // uncommenta þetta fyrir löggusnák
-    // private void checkSetColor(Rectangle r) {
-    // if (r.getFill().equals(Color.BLUE))
-    // r.setFill(Color.RED);
-    // else
-    // r.setFill(Color.BLUE);
-    // }
-
-    private void moveRect(Rectangle r) {
-        int rotation = (int) r.getRotate();
-        Tuple movement = (Tuple) moveMap.get(rotation);
-
-        if (rotation == 0 && r.getX() >= pane.getWidth() - 25)
-            r.setX(-25);
-
-        else if (rotation == 180 && r.getX() <= -25)
-            r.setX(pane.getWidth() - 25);
-        else
-            r.setX(r.getX() + movement.x);
-
-        if (rotation == 90 && r.getY() >= pane.getHeight() - 25)
-            r.setY(-25);
-        else if (rotation == 270 && r.getY() <= -25)
-            r.setY(pane.getHeight() - 25);
-        else
-            r.setY(r.getY() + movement.y);
-
-        // tail(piece, parent);
+    /**
+     * örfall til að þurfa ekki að kalla á ps.move og ps.tailmove beint inn í
+     * leikjalykkjunni
+     */
+    private void movePlayer() {
+        ps.move();
+        ps.tailMover();
     }
 
-    private void tail(Rectangle piece, Rectangle parent) {
-        int parentRotation = (int) parent.getRotate();
-        piece.setRotate(parentRotation);
-        switch (parentRotation) {
-            case 0:
-                piece.setX(parent.getX() - 25);
-                piece.setY(parent.getY());
-                break;
-            case 90:
-                piece.setY(parent.getY() - 25);
-                piece.setX(parent.getX());
-                break;
-            case 180:
-                piece.setX(parent.getX() + 25);
-                piece.setY(parent.getY());
-                break;
-            case 270:
-                piece.setY(parent.getY() + 25);
-                piece.setX(parent.getX());
-                break;
-            default:
-                break;
+    /**
+     * örfall til að athuga hvort snákur snerti mat
+     * ef hann snertir mat, hækka stigin um 1,
+     * drepa núverandi mat og bæta við nýjum halabút
+     */
+    private void intersectChecks() {
+        if (ps.intersects(foodBounds)) {
+            pane.getChildren().remove(foodItem);
+            // System.out.println("nammi namm :)~");
+            pane.getChildren().add(ps.addTailPiece());
+            score.plus();
+            scoreLabel.setText(score.getScore());
         }
     }
 
-    private void start(Scene scene) {
+    /**
+     * loopar yfir enemies listann og kallar á moveRandom() fyrir hvern og einn
+     * athugar líka hvort player og enemy rekast á, ef svo kallar á death()
+     */
+    private void moveEnemies() {
+        for (snake enemy : enemies) {
+            if (enemy == null)
+                continue;
+            enemy.moveRandom();
+            if (ps.intersects(enemy.getBoundsInParent())) {
+                // System.out.println("Dead :/ at " + r.getX());
+                death();
+            }
+        }
+    }
+
+    /**
+     * mikilvægasta fallið, frumstillir allt, hreinsar skjáinn,
+     * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
+     */
+    private void start() {
+        isDead = false;
+        pane.getChildren().clear();
+        enemies.clear();
         addEnemy();
-        Rectangle r = new Rectangle(50, 50, Color.GREEN);
-        r.setX(50);
-        r.setY(50);
-        snakePieces.add(r);
         ps = new playerSnake(pane);
 
-        pane.getChildren().addAll(r, scoreLabel, ps);
+        // fyrir debug, leyfir það að færa snák með músinni
+        // ps.setOnMouseDragged(event -> {
+        // ps.setX(event.getX() - 50);
+        // ps.setY(event.getY() - 50);
+        // });
 
-        r.setOnMouseDragged(event -> {
-            r.setX(event.getX() - 50);
-            r.setY(event.getY() - 50);
-        });
+        pane.getChildren().addAll(scoreLabel, ps);
 
         createTimeline();
 
+        pauseEvent();
+
         pane.getScene().setOnKeyPressed(e -> {
             if (t.getStatus() == Status.RUNNING && (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN ||
-                    e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.LEFT)) {
+                    e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.W
+                    || e.getCode() == KeyCode.A || e.getCode() == KeyCode.S || e.getCode() == KeyCode.D)) {
 
                 KeyCode k = e.getCode();
                 switch (k) {
+                    case D:
                     case RIGHT:
-                        r.setRotate(0);
                         ps.rotate(0);
                         break;
+                    case S:
                     case DOWN:
-                        r.setRotate(90);
                         ps.rotate(90);
                         break;
+                    case A:
                     case LEFT:
-                        r.setRotate(180);
                         ps.rotate(180);
                         break;
+                    case W:
                     case UP:
-                        r.setRotate(270);
                         ps.rotate(270);
                         break;
                     default:
                         break;
                 }
             }
-
-            if (e.getCode() == KeyCode.SPACE) {
-            }
-
-            if (e.getCode() == KeyCode.ESCAPE) {
-                if (t.getStatus() == Status.RUNNING)
-                    timeLineController(2);
-                else
-                    timeLineController(1);
-            }
             e.consume();
 
         });
     }
 
-    private void addTailPiece() {
-        // todo stóra, bæta við röndum
-        snakePieces.add(new Rectangle(50, 50));
-        Rectangle piece = snakePieces.get(snakePieces.size() - 1);
-        piece.setX(snakePieces.get(snakePieces.size() - 2).getX());
-        piece.setY(snakePieces.get(snakePieces.size() - 2).getY());
-        pane.getChildren().add(piece);
+    private void pauseEvent() {
+        pane.getScene().setOnMouseClicked(e -> {
+            if (!isDead) {
+                if (t.getStatus() == Status.RUNNING)
+                    timeLineController(2);
+                else
+                    timeLineController(1);
+            }
+        });
     }
 
     private void addFood() {
@@ -232,6 +209,8 @@ public class MainController implements Initializable {
             xCoord = xCoord - (xCoord % 50);
 
             foodItem.setCenterY(yCoord);
+            foodItem.setStyle("-fx-stroke: white; -fx-stroke-width: 3;");
+
             foodItem.setCenterX(xCoord);
             foodBounds = foodItem.getBoundsInParent();
             pane.getChildren().add(foodItem);
@@ -239,23 +218,22 @@ public class MainController implements Initializable {
     }
 
     private void addEnemy() {
-        snake s = new snake(pane);
-        enemies.add(s);
-        pane.getChildren().add(s);
+        if (counter++ % 500 == 0) {
+            snake s = new snake(pane);
+            enemies.add(s);
+            pane.getChildren().add(s);
+        }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Tuple RIGHT = new Tuple(25, 0);
-        Tuple LEFT = new Tuple(-25, 0);
-        Tuple UP = new Tuple(0, -25);
-        Tuple DOWN = new Tuple(0, 25);
-
-        moveMap.put(0, RIGHT);
-        moveMap.put(90, DOWN);
-        moveMap.put(180, LEFT);
-        moveMap.put(270, UP);
-
-        // start();
+    private void death() {
+        isDead = true;
+        timeLineController(3);
+        counter = 0;
+        startText.setFont(Font.font(16));
+        startText.setPrefWidth(pane.getWidth());
+        startText.setPrefHeight(pane.getHeight());
+        startText.setText(score.saveScore() + "\n Smelltu hér til að byrja annann leik");
+        pane.getChildren().add(startText);
     }
+
 }

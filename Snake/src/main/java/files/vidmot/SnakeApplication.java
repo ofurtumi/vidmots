@@ -14,6 +14,7 @@ public class SnakeApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         stage.setTitle("Hello!");
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 
