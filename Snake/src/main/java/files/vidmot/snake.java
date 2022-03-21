@@ -1,30 +1,61 @@
 package files.vidmot;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
-import files.vinnsla.Tuple;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class snake extends Rectangle {
-    private HashMap<Integer, Tuple> moveMap = new HashMap<Integer, Tuple>();
+public class snake extends ImageView { 
+    // * breytti úr extends rectangle yfir í extends ImageView 
+    // * fyrir auðveldara aðgengi að sprites
+    protected ArrayList<Rectangle> snakePieces = new ArrayList<Rectangle>();
+    protected ArrayList<ImageView> snakeSprites = new ArrayList<ImageView>();
+
+    protected Image[] imgs = new Image[5];
+
     private int counter = 0;
-    private Pane pane;
+
+    protected int velX = 1;
+    protected int velY = 0;
+
+    // ! Tekið út skjár verður bara 1024*1024 í prod
+    // ! private Pane pane;
     // þarf að halda utan um pane til að geta farið í gegn um vegg
     // eftir að skjárinn er stækkaður
 
-    public snake(Pane p) {
-        this.setWidth(150);
-        this.setHeight(50);
-        this.setFill(Color.ORANGE);
-        this.setX(250);
-        this.setY(250);
-        this.pane = p;
-        this.setStyle("-fx-stroke: white; -fx-stroke-width: 3;");
+    public snake() {
+        getImages();
 
+        this.setImage(imgs[0]); 
+        this.setFitWidth(32);
+        this.setFitHeight(32);
+        this.setX(256);
+        this.setY(256);
+        this.snakeSprites.add(this);
+    }
 
-        onStart();
+    /**
+     * ? gets sprite images from resource folder 
+     * * head:  0
+     * * body:  1
+     * * left:  2
+     * * right: 3
+     * * tail:  4
+     */
+    private void getImages() {
+        for (int i = 0; i < 5; i++) {
+            imgs[i] = new Image(snake.class.getResourceAsStream("imgs/ps"+(i+1)+".png"));
+        }
+    }
+
+    public ArrayList<Rectangle> getPieces() {
+        return this.snakePieces;
+    }
+
+    public ArrayList<ImageView> getSprites() {
+        return this.snakeSprites;
     }
 
     public void moveRandom() {
@@ -33,60 +64,135 @@ public class snake extends Rectangle {
             counter = 0;
         }
         if (counter % 2 == 0) {
+            tailMover();
             move();
         }
     }
 
+    public void firstTail() {
+        this.addTailPiece();
+        this.addTailPiece();
+    }
+
+    public ImageView addTailPiece() {
+        ImageView piece = new ImageView(imgs[4]);
+        piece.setFitWidth(32);
+        piece.setFitHeight(32);
+        snakeSprites.add(piece);
+
+        ImageView parent = snakeSprites.get(snakeSprites.size() - 2);
+        piece.setX(parent.getX());
+        piece.setY(parent.getY());
+        if (snakeSprites.size() != 2) parent.setImage(imgs[1]);
+        // ! afhverju í fokkanum snýr rassinn ekki rétt í byrjun???
+        // todo laga það shit
+        return piece;
+    }
+
+    public void tailMover() {
+        for (int i = snakeSprites.size() - 1; i > 0; i--) {
+            snakeSprites.get(i).setX(snakeSprites.get(i - 1).getX());
+            snakeSprites.get(i).setY(snakeSprites.get(i - 1).getY());
+        }
+    }
+
     public void move() {
-        int rotation = (int) this.getRotate();
-        Tuple movement = (Tuple) moveMap.get(rotation);
-
-        if (rotation == 0 && this.getX() >= pane.getWidth() - (this.getWidth()/2))
-            this.setX(-(this.getWidth()/2));
-
-        else if (rotation == 180 && this.getX() <= -(this.getWidth()/2))
-            this.setX(pane.getWidth() - (this.getWidth()/2));
+        if (this.velX == 1 && this.getX() == 992)
+            this.setX(0);
+        else if (this.velX == -1 && this.getX() == 0)
+            this.setX(992);
         else
-            this.setX(this.getX() + movement.x);
+            this.setX(this.getX() + (32 * velX));
 
-        if (rotation == 90 && this.getY() >= pane.getHeight() - (this.getWidth()/2))
-            this.setY(-(this.getWidth()/2));
-        else if (rotation == 270 && this.getY() <= -(this.getWidth()/2))
-            this.setY(pane.getHeight() - (this.getWidth()/2));
+        if (this.velY == 1 && this.getY() == 992)
+            this.setY(0);
+        else if (this.velY == -1 && this.getY() == 0)
+            this.setY(992);
         else
-            this.setY(this.getY() + movement.y);
+            this.setY(this.getY() + (32 * velY));
+
+        snakeSprites.get(0).setX(this.getX());
+        snakeSprites.get(0).setY(this.getY());
+
+        updateSprites();
+    }
+
+    private void updateSprites() {
+        if (velX != 0) {
+            if (velX > 0) snakeSprites.get(0).setRotate(0);
+            else snakeSprites.get(0).setRotate(180);
+        }
+        else if (velY > 0) snakeSprites.get(0).setRotate(90);
+        else snakeSprites.get(0).setRotate(270);
+
+        
+
+        for (int i = 1; i < snakeSprites.size()-1; i++) {
+            ImageView p = snakeSprites.get(i-1);
+            ImageView t = snakeSprites.get(i);
+            ImageView c = snakeSprites.get(i+1);
+
+            if (p.getX() == t.getX()) {
+                if (p.getY() < t.getY()) {
+                    if (c.getX() == t.getX())       {t.setImage(imgs[1]); t.setRotate(0);}
+                    else if (c.getX() < t.getX())   {t.setImage(imgs[2]); t.setRotate(90);}
+                    else                            {t.setImage(imgs[3]); t.setRotate(270);}
+                }
+                else {
+                    if (c.getX() == t.getX())       {t.setImage(imgs[1]); t.setRotate(180);}
+                    else if (c.getX() < t.getX())   {t.setImage(imgs[2]); t.setRotate(0);}
+                    else                            {t.setImage(imgs[3]); t.setRotate(0);}
+                }
+            }
+            else if (p.getX() < t.getX()) {
+                if (c.getX() == t.getX())           {
+                    if (c.getY() < t.getY())        {t.setImage(imgs[2]); t.setRotate(90);}
+                    else                            {t.setImage(imgs[2]); t.setRotate(0);}
+                }
+                else                                {t.setImage(imgs[1]); t.setRotate(90);}
+            }
+            else {
+                if (c.getX() == t.getX()) {
+                    if (c.getY() < t.getY())        {t.setImage(imgs[3]); t.setRotate(270);}
+                    else                            {t.setImage(imgs[3]); t.setRotate(0);}
+                }
+                else                                {t.setImage(imgs[1]); t.setRotate(270);}
+            }
+        }
+
+        ImageView p = snakeSprites.get(snakeSprites.size()-2);
+        ImageView t = snakeSprites.get(snakeSprites.size()-1);
+
+        if (p.getY() < t.getY())        {t.setRotate(180);}
+        else if (p.getY() > t.getY())   {t.setRotate(0);}
+        else if (p.getX() < t.getX())   {t.setRotate(90);}
+        else                            {t.setRotate(270);}
     }
 
     private void rotateRandom() {
-        int direction = (int) (Math.random() * 4);
+        int direction = (int) (Math.random() * 2);
         switch (direction) {
             case 0:
-                this.setRotate(0);
+                if (this.velX != 0) {
+                    this.velX = 0;
+                    this.velY = 1;
+                } else {
+                    this.velX = 1;
+                    this.velY = 0;
+                }
                 break;
             case 1:
-                this.setRotate(90);
-                break;
-            case 2:
-                this.setRotate(180);
-                break;
-            case 3:
-                this.setRotate(270);
+                if (this.velX != 0) {
+                    this.velX = 0;
+                    this.velY = -1;
+                } else {
+                    this.velX = -1;
+                    this.velY = 0;
+                }
                 break;
             default:
                 break;
 
         }
-    }
-
-    private void onStart() {
-        Tuple RIGHT = new Tuple(25, 0);
-        Tuple LEFT = new Tuple(-25, 0);
-        Tuple UP = new Tuple(0, -25);
-        Tuple DOWN = new Tuple(0, 25);
-
-        moveMap.put(0, RIGHT);
-        moveMap.put(90, DOWN);
-        moveMap.put(180, LEFT);
-        moveMap.put(270, UP);
     }
 }
