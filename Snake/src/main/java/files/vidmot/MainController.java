@@ -6,17 +6,18 @@ import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+import files.vinnsla.Map;
 import files.vinnsla.Score;
 
 public class MainController {
@@ -40,6 +41,10 @@ public class MainController {
     private playerSnake ps;
     private boolean isDead;
 
+    private boolean notPressedThisFrame;
+
+    private Map map;
+
     private int counter = 0;
 
     /**
@@ -59,20 +64,55 @@ public class MainController {
      * býr til tímalínu fyrir "leikja lykkjuna"
      * endar á að kalla á timeLineController sem er fallið sem
      * heldur utan um stöðu, [PLAY,PAUSE,STOP], leiksins
+     * ! uppfæra tímalínu
+     * ? Athuga stöður á kortinu útfrá reiknuðum, en ekki sýndum, stöðum ->
+     * ? Ef allt er í góðu, teikna útfrá mappinu og hreinsa svo mappið ->
+     * ? Ef ekki þá er dauði -> Uppfæra stig -> Reikna stöður fyrir nýja |
      */
     private void createTimeline() {
         k = new KeyFrame(Duration.millis(100), e -> {
+            notPressedThisFrame = true;
             addFood();
             addEnemy();
             movePlayer();
             if (enemies.size() > 0)
                 moveEnemies();
             intersectChecks();
+            // updateMap();
         });
         t = new Timeline(k);
         t.setCycleCount(Timeline.INDEFINITE);
 
         timeLineController(1);
+    }
+
+    /**
+     * ! nenni þessu eiginlega ekki, ekki viss um að það þurfi þannig beila??
+     */
+    private void updateMap() {
+        map.clearMap();
+
+        ArrayList<ImageView> psP = ps.getSprites();
+        for (int i = 0; i < psP.size(); i++) {
+            if (i == 0)
+                map.setMapSquare(1, (int) psP.get(i).getX() / 32, (int) psP.get(i).getY() / 32);
+            else if (i == psP.size() - 1)
+                map.setMapSquare(3, (int) psP.get(i).getX() / 32, (int) psP.get(i).getY() / 32);
+            else
+                map.setMapSquare(2, (int) psP.get(i).getX() / 32, (int) psP.get(i).getY() / 32);
+        }
+
+        for (snake s : enemies) {
+            ArrayList<ImageView> sprites = s.getSprites();
+            for (int i = 0; i < sprites.size(); i++) {
+                int x = (int) (sprites.get(i).getX() / 32);
+                int y = (int) (sprites.get(i).getY() / 32);
+
+                map.setMapSquare(4 + i, x, y);
+            }
+        }
+
+        map.setMapSquare(7, (int) (foodItem.getCenterX() / 32), (int) (foodItem.getCenterY() / 32));
     }
 
     /**
@@ -118,6 +158,13 @@ public class MainController {
             score.plus();
             scoreLabel.setText(score.getScore());
         }
+
+        for (int i = 1; i < ps.getSprites().size(); i++) {
+            Bounds sprite = ps.getSprites().get(i).getBoundsInParent();
+            if (ps.getHitbox().intersects(sprite)) {
+                death();
+            }
+        }
     }
 
     /**
@@ -130,7 +177,7 @@ public class MainController {
             if (enemy == null)
                 continue;
             enemy.moveRandom();
-            for (Rectangle piece : enemy.getPieces()) {
+            for (ImageView piece : enemy.getSprites()) {
                 if (hb.intersects(piece.getBoundsInParent())) {
                     death();
                     break;
@@ -144,6 +191,7 @@ public class MainController {
      * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
      */
     private void start() {
+        map = new Map();
         isDead = false;
         pane.getChildren().clear();
         enemies.clear();
@@ -158,18 +206,20 @@ public class MainController {
         createTimeline();
 
         pane.getScene().setOnKeyPressed(e -> {
-            if (t.getStatus() == Status.RUNNING && (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN ||
+            if (notPressedThisFrame && t.getStatus() == Status.RUNNING && (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN ||
                     e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.W
                     || e.getCode() == KeyCode.A || e.getCode() == KeyCode.S || e.getCode() == KeyCode.D)) {
 
+                notPressedThisFrame = false;
                 KeyCode k = e.getCode();
                 ps.turn(k);
             }
 
             if (!isDead && e.getCode() == KeyCode.ESCAPE) {
-                if (t.getStatus() == Status.RUNNING)
+                if (t.getStatus() == Status.RUNNING) {
                     timeLineController(2);
-                else
+                    System.out.println(map.toString());
+                } else
                     timeLineController(1);
             }
             e.consume();

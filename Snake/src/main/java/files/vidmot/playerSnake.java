@@ -1,5 +1,9 @@
 package files.vidmot;
 
+import java.util.ArrayList;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -9,15 +13,34 @@ public class playerSnake extends snake {
 
 
     public playerSnake() {
+        getImages();
+
+        this.setImage(imgs[0]);
         this.setX(32);
         this.setY(128);
-        headHitBox.setFill(Color.YELLOW);
         moveHitbox();
     }
 
     public void moveHitbox() {
         headHitBox.setCenterX(this.getX() + 16);
         headHitBox.setCenterY(this.getY() + 16);
+    }
+
+    /**
+     * gets sprite images from resource folder 
+     * * head:  0
+     * * body:  1
+     * * left:  2
+     * * tail:  3
+     */
+    private void getImages() {
+        for (int i = 0; i < 4; i++) {
+            this.imgs[i] = new Image(snake.class.getResourceAsStream("imgs/ps"+(i+1)+".png"));
+        }
+    }
+
+    public ArrayList<ImageView> getSprites() {
+        return this.snakeSprites;
     }
 
     public Circle getHitbox() {
@@ -60,7 +83,6 @@ public class playerSnake extends snake {
     }
 
     public void death() {
-        snakePieces.clear();
         snakeSprites.clear();
     }
 }
