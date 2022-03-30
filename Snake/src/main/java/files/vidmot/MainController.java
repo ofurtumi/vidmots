@@ -6,6 +6,7 @@ import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +48,8 @@ public class MainController {
 
     private int counter = 0;
 
+    private ArrayList<ImageView> edges = new ArrayList<>();
+
     /**
      * handler fyrir startbutton, gefur leikmanni smá tíma til að byrja leikinn
      * auk þess sem nær í scene sem er nauðsynlegt að hafa í start til að finna
@@ -78,6 +81,7 @@ public class MainController {
             if (enemies.size() > 0)
                 moveEnemies();
             intersectChecks();
+            frontEdges();
             // updateMap();
         });
         t = new Timeline(k);
@@ -86,9 +90,13 @@ public class MainController {
         timeLineController(1);
     }
 
-    /**
-     * ! nenni þessu eiginlega ekki, ekki viss um að það þurfi þannig beila??
-     */
+    private void frontEdges() {
+        for (ImageView i : edges) {
+            i.toFront();
+        }
+    }
+
+    // ! nenni þessu eiginlega ekki, ekki viss um að það þurfi þannig beila??
     private void updateMap() {
         map.clearMap();
 
@@ -191,10 +199,12 @@ public class MainController {
      * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
      */
     private void start() {
+
         map = new Map();
         isDead = false;
         pane.getChildren().clear();
         enemies.clear();
+        edges.clear();
         addEnemy();
         ps = new playerSnake();
         ps.firstTail();
@@ -202,13 +212,15 @@ public class MainController {
         pane.getChildren().add(scoreLabel);
         pane.getChildren().addAll(ps.getSprites());
         // pane.getChildren().addAll(ps.getHitbox());
+        createEdges();
 
         createTimeline();
 
         pane.getScene().setOnKeyPressed(e -> {
-            if (notPressedThisFrame && t.getStatus() == Status.RUNNING && (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN ||
-                    e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.W
-                    || e.getCode() == KeyCode.A || e.getCode() == KeyCode.S || e.getCode() == KeyCode.D)) {
+            if (notPressedThisFrame && t.getStatus() == Status.RUNNING
+                    && (e.getCode() == KeyCode.UP || e.getCode() == KeyCode.DOWN ||
+                            e.getCode() == KeyCode.RIGHT || e.getCode() == KeyCode.LEFT || e.getCode() == KeyCode.W
+                            || e.getCode() == KeyCode.A || e.getCode() == KeyCode.S || e.getCode() == KeyCode.D)) {
 
                 notPressedThisFrame = false;
                 KeyCode k = e.getCode();
@@ -227,12 +239,52 @@ public class MainController {
         });
     }
 
+    private void createEdges() {
+        Image side = new Image(MainController.class.getResourceAsStream("imgs/edge-m.png"));
+        for (int j = 0; j < 30; j++) {
+            ImageView emb = new ImageView(side);
+            emb.setX(32+(j*32));
+            emb.setY(992);
+            edges.add(emb);
+        }
+        for (int j = 0; j < 30; j++) {
+            ImageView emb = new ImageView(side);
+            emb.setX(32+(j*32));
+            emb.setY(0);
+            emb.setRotate(180);
+            edges.add(emb);
+        }
+        for (int j = 0; j < 30; j++) {
+            ImageView emb = new ImageView(side);
+            emb.setX(0);
+            emb.setY(32+(j*32));
+            emb.setRotate(90);
+            edges.add(emb);
+        }
+        for (int j = 0; j < 30; j++) {
+            ImageView emb = new ImageView(side);
+            emb.setX(992);
+            emb.setY(32+(j*32));
+            emb.setRotate(270);
+            edges.add(emb);
+        }
+        Image corner = new Image(MainController.class.getResourceAsStream("imgs/edge-e.png"));
+        for (int i = 0; i < 4; i++) {
+            ImageView ec = new ImageView(corner);
+            ec.setX(i < 2 ? 0 : 992);
+            ec.setY(i != 0 && i <= 2 ? 992 : 0);
+            ec.setRotate(540 - (i*90));
+            edges.add(ec);
+        }
+        pane.getChildren().addAll(edges);
+    }
+
     private void addFood() {
         if (!pane.getChildren().contains(foodItem)) {
             foodItem = new Circle(16, Color.RED);
-            int yCoord = ((int) (Math.random() * pane.getHeight()));
+            int yCoord = ((int) (64 + (Math.random() * 900)));
             yCoord = yCoord - (yCoord % 16);
-            int xCoord = ((int) (Math.random() * pane.getWidth()));
+            int xCoord = ((int) (64 + (Math.random() * 900)));
             xCoord = xCoord - (xCoord % 16);
 
             foodItem.setCenterY(yCoord);

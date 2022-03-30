@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class snake extends ImageView { 
-    // * breytti úr extends rectangle yfir í extends ImageView 
+public class snake extends ImageView {
+    // * breytti úr extends rectangle yfir í extends ImageView
     // * fyrir auðveldara aðgengi að sprites
     // protected ArrayList<Rectangle> snakePieces = new ArrayList<Rectangle>();
     protected ArrayList<ImageView> snakeSprites = new ArrayList<ImageView>();
@@ -35,15 +35,15 @@ public class snake extends ImageView {
     }
 
     /**
-     * gets sprite images from resource folder 
-     * * head:  0
-     * * body:  1
-     * * left:  2
-     * * tail:  3
+     * gets sprite images from resource folder
+     * * head: 0
+     * * body: 1
+     * * left: 2
+     * * tail: 3
      */
     private void getImages() {
         for (int i = 0; i < 4; i++) {
-            imgs[i] = new Image(snake.class.getResourceAsStream("imgs/es"+(i+1)+".png"));
+            imgs[i] = new Image(snake.class.getResourceAsStream("imgs/es" + (i + 1) + ".png"));
         }
     }
 
@@ -52,20 +52,21 @@ public class snake extends ImageView {
     }
 
     public void checkIfTurnNeeded() {
-        
+
     }
 
     public void moveRandom() {
-        // todo: bæta við checki hvort playersnákur sé fyrir framan eitursnák, ef svo, beygja
-        // * væri hugsanlega hægt að hafa hitbox hlut einu skrefi á undan, ósýnilegt 
+        // todo: bæta við checki hvort playersnákur sé fyrir framan eitursnák, ef svo,
+        // beygja
+        // * væri hugsanlega hægt að hafa hitbox hlut einu skrefi á undan, ósýnilegt
 
         if (counter++ == 50) {
             rotateRandom();
             counter = 0;
         }
         // if (counter % 2 == 0) {
-            tailMover();
-            move();
+        tailMover();
+        move();
         // }
     }
 
@@ -84,20 +85,25 @@ public class snake extends ImageView {
         piece.setX(parent.getX());
         piece.setY(parent.getY());
         piece.setRotate(parent.getRotate());
-        if (snakeSprites.size() != 2) parent.setImage(imgs[1]);
+        if (snakeSprites.size() != 2)
+            parent.setImage(imgs[1]);
 
-        switch ((int)piece.getRotate()) {
+        switch ((int) piece.getRotate()) {
             case 0:
-                piece.setY(piece.getY()-32);;
+                piece.setY(piece.getY() - 32);
+                ;
                 break;
             case 90:
-                piece.setX(piece.getX()+32);;
+                piece.setX(piece.getX() + 32);
+                ;
                 break;
             case 180:
-                piece.setY(piece.getY()+32);;
+                piece.setY(piece.getY() + 32);
+                ;
                 break;
             case 270:
-                piece.setX(piece.getX()-32);;
+                piece.setX(piece.getX() - 32);
+                ;
                 break;
             default:
                 break;
@@ -140,54 +146,70 @@ public class snake extends ImageView {
 
     private void updateSprites() {
         if (velX != 0) {
-            if (velX > 0) snakeSprites.get(0).setRotate(0);
-            else snakeSprites.get(0).setRotate(180);
-        }
-        else if (velY > 0) snakeSprites.get(0).setRotate(90);
-        else snakeSprites.get(0).setRotate(270);
+            if (velX > 0)
+                snakeSprites.get(0).setRotate(0);
+            else
+                snakeSprites.get(0).setRotate(180);
+        } else if (velY > 0)
+            snakeSprites.get(0).setRotate(90);
+        else
+            snakeSprites.get(0).setRotate(270);
 
-        
-
-        for (int i = 1; i < snakeSprites.size()-1; i++) {
-            ImageView p = snakeSprites.get(i-1);
+        for (int i = 1; i < snakeSprites.size() - 1; i++) {
+            ImageView p = snakeSprites.get(i - 1);
             ImageView t = snakeSprites.get(i);
-            ImageView c = snakeSprites.get(i+1);
+            ImageView c = snakeSprites.get(i + 1);
 
-            if (p.getX() == t.getX()) {
-                if (p.getY() < t.getY()) {
-                    if (c.getX() == t.getX())       {t.setImage(imgs[1]); t.setRotate(0);}
-                    else if (c.getX() < t.getX())   {t.setImage(imgs[2]); t.setRotate(90);}
-                    else                            {t.setImage(imgs[2]); t.setRotate(180);}
-                }
-                else {
-                    if (c.getX() == t.getX())       {t.setImage(imgs[1]); t.setRotate(180);}
-                    else if (c.getX() < t.getX())   {t.setImage(imgs[2]); t.setRotate(0);}
-                    else                            {t.setImage(imgs[2]); t.setRotate(270);}
-                }
-            }
-            else if (p.getX() < t.getX()) {
-                if (c.getX() == t.getX())           {
-                    if (c.getY() < t.getY())        {t.setImage(imgs[2]); t.setRotate(90);}
-                    else                            {t.setImage(imgs[2]); t.setRotate(0);}
-                }
-                else                                {t.setImage(imgs[1]); t.setRotate(90);}
-            }
-            else {
-                if (c.getX() == t.getX()) {
-                    if (c.getY() < t.getY())        {t.setImage(imgs[2]); t.setRotate(180);}
-                    else                            {t.setImage(imgs[2]); t.setRotate(270);}
-                }
-                else                                {t.setImage(imgs[1]); t.setRotate(270);}
+            int px = (int) p.getX();
+            int py = (int) p.getY();
+            int tx = (int) t.getX();
+            int ty = (int) t.getY();
+            int cx = (int) c.getX();
+            int cy = (int) c.getY();
+
+            if ((px == tx && py < ty && cx == tx && cy > ty)
+                    || (px == tx && py > ty && cx == tx && cy < ty)) {
+                t.setImage(imgs[1]);
+                t.setRotate(180);
+            } else if ((px < tx && py == ty && cx > tx && cy == ty)
+                    || (px > tx && py == ty && cx < tx && cy == ty)) {
+                t.setImage(imgs[1]);
+                t.setRotate(270);
+            } else if ((px == tx && py < ty && cx < tx && cy == ty)
+                    || (px < tx && py == ty && cx == tx && cy < ty)) {
+                t.setImage(imgs[2]);
+                t.setRotate(90);
+            } else if ((px == tx && py < ty && cx > tx && cy == ty)
+                    || (px > tx && py == ty && cx == tx && cy < ty)) {
+                t.setImage(imgs[2]);
+                t.setRotate(180);
+            } else if ((px == tx && py > ty && cx < tx && cy == ty)
+                    || (px < tx && py == ty && cx == tx && cy > ty)) {
+                t.setImage(imgs[2]);
+                t.setRotate(0);
+            } else if ((px == tx && py > ty && cx > tx && cy == ty)
+                    || (px > tx && py == ty && cx == tx && cy > ty)) {
+                t.setImage(imgs[2]);
+                t.setRotate(270);
             }
         }
 
-        ImageView p = snakeSprites.get(snakeSprites.size()-2);
-        ImageView t = snakeSprites.get(snakeSprites.size()-1);
+        ImageView p = snakeSprites.get(snakeSprites.size() - 2);
+        ImageView t = snakeSprites.get(snakeSprites.size() - 1);
 
-        if (p.getY() < t.getY())        {t.setRotate(180);}
-        else if (p.getY() > t.getY())   {t.setRotate(0);}
-        else if (p.getX() < t.getX())   {t.setRotate(90);}
-        else                            {t.setRotate(270);}
+        if (p.getY() < t.getY()) {
+            if (p.getY() == 0 && t.getY() == 992) t.setRotate(0);
+            else t.setRotate(180);
+        } else if (p.getY() > t.getY()) {
+            if (p.getY() == 992 && t.getY() == 0) t.setRotate(180);
+            else t.setRotate(0);
+        } else if (p.getX() < t.getX()) {
+            if (p.getX() == 0 && t.getX() == 992) t.setRotate(270);
+            else t.setRotate(90);
+        } else if (p.getX() > t.getX()){
+            if (p.getX() == 992 && t.getX() == 0) t.setRotate(90);
+            t.setRotate(270);
+        }
     }
 
     private void rotateRandom() {
