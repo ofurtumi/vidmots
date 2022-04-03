@@ -16,10 +16,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import files.vinnsla.Map;
 import files.vinnsla.Score;
+import files.vidmot.SceneController;
 
 public class MainController {
     @FXML
@@ -31,7 +33,7 @@ public class MainController {
     private Score score = new Score();
     private Label scoreLabel = new Label(score.getScore());
 
-    private Circle foodItem;
+    private ImageView foodItem;
     private Bounds foodBounds;
 
     private KeyFrame k;
@@ -46,7 +48,11 @@ public class MainController {
 
     private Map map;
 
+    private SceneController SC;
+
     private int counter = 0;
+
+    Image apple = new Image(MainController.class.getResourceAsStream("imgs/apple.png"));
 
     private ArrayList<ImageView> edges = new ArrayList<>();
 
@@ -120,7 +126,7 @@ public class MainController {
             }
         }
 
-        map.setMapSquare(7, (int) (foodItem.getCenterX() / 32), (int) (foodItem.getCenterY() / 32));
+        map.setMapSquare(7, (int) (foodItem.getX() / 32), (int) (foodItem.getY() / 32));
     }
 
     /**
@@ -281,15 +287,14 @@ public class MainController {
 
     private void addFood() {
         if (!pane.getChildren().contains(foodItem)) {
-            foodItem = new Circle(16, Color.RED);
+            foodItem = new ImageView(apple);
             int yCoord = ((int) (64 + (Math.random() * 900)));
             yCoord = yCoord - (yCoord % 16);
             int xCoord = ((int) (64 + (Math.random() * 900)));
             xCoord = xCoord - (xCoord % 16);
 
-            foodItem.setCenterY(yCoord);
-
-            foodItem.setCenterX(xCoord);
+            foodItem.setX(yCoord);
+            foodItem.setY(xCoord);
             foodBounds = foodItem.getBoundsInParent();
             pane.getChildren().add(foodItem);
         }
@@ -310,11 +315,13 @@ public class MainController {
         ps.death();
         timeLineController(3);
         counter = 0;
+        
         startText.setFont(Font.font(16));
         startText.setPrefWidth(pane.getWidth());
         startText.setPrefHeight(pane.getHeight());
         startText.setText(score.saveScore() + "\n Smelltu hér til að byrja annann leik");
         pane.getChildren().add(startText);
+
     }
 
 }

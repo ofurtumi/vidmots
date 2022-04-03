@@ -1,0 +1,21 @@
+#background-pane {
+	-fx-background-image: url('../imgs/death-score.png');
+	background-image: url('../imgs/death-score.png');
+
+	-fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 1024 1024;
+	background-size: 1024 1024;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.border {
+	-fx-border-color: #000;
+	border-color: #000;
+
+	-fx-border-width: 1px;
+	border-width: 1px;
+}

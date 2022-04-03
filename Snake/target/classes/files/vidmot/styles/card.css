@@ -1,0 +1,13 @@
+.card {
+    -fx-background-image: url('../imgs/score-card-blank.png');
+	background-image: url('../imgs/score-card-blank.png');
+
+	-fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 256 96;
+	background-size: 256 96;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}

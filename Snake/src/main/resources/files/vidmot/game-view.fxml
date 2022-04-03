@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" style="-fx-background-color: #99e550;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.MainController">
+   <children>
+      <Label fx:id="startText" alignment="CENTER" contentDisplay="CENTER" layoutY="-1.0" onMouseClicked="#handleButtonAction" prefHeight="1024.0" prefWidth="1024.0" text="Smelltu á textann til að byrja leik!" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="80.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
