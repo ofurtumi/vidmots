@@ -6,7 +6,12 @@
 
 <AnchorPane prefHeight="1024.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.MenuController">
    <children>
-      <Button fx:id="startButton" layoutX="198.0" layoutY="36.0" mnemonicParsing="false" onAction="#switchScenes" prefHeight="312.0" prefWidth="496.0" text="Skipta">
+      <Button fx:id="startButton" layoutX="264.0" layoutY="32.0" mnemonicParsing="false" onAction="#switchScenesGame" prefHeight="312.0" prefWidth="496.0" text="Leikur">
+         <font>
+            <Font size="86.0" />
+         </font>
+      </Button>
+      <Button fx:id="deathButton" layoutX="264.0" layoutY="421.0" mnemonicParsing="false" onAction="#switchScenesDeath" prefHeight="312.0" prefWidth="496.0" text="Dauði">
          <font>
             <Font size="86.0" />
          </font>

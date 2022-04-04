@@ -15,15 +15,25 @@ import java.io.IOException;
 
 public class MenuController {
     @FXML private Button startButton;
+    @FXML private Button deathButton;
     // @FXML private Button statButton;
     
 
-    public void switchScenes(ActionEvent event) throws IOException{
+    public void switchScenesGame(ActionEvent event) throws IOException{
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
 
         Parent game = FXMLLoader.load(getClass().getResource("game-view.fxml"));
         Scene scene = new Scene(game);
+        thisStage.setScene(scene);
+    }
+
+    public void switchScenesDeath(ActionEvent event) throws IOException{
+        Node node = (Node) event.getSource();
+        Stage thisStage = (Stage) node.getScene().getWindow();
+
+        Parent death = FXMLLoader.load(getClass().getResource("death-view.fxml"));
+        Scene scene = new Scene(death);
         thisStage.setScene(scene);
     }
 }

@@ -3,9 +3,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="96.0" maxWidth="256.0" prefHeight="96.0" prefWidth="256.0" styleClass="card" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.ScoreCard"  stylesheets="@styles/card.css">
+<fx:root maxHeight="96.0" type="javafx.scene.layout.AnchorPane" maxWidth="256.0" prefHeight="96.0" prefWidth="256.0" styleClass="card" stylesheets="@styles/card.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane hgap="4.0" prefHeight="96.0" prefWidth="256.0">
+      <GridPane fx:id="gp" hgap="4.0" prefHeight="96.0" prefWidth="256.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -19,4 +19,4 @@
          </padding>
       </GridPane>
    </children>
-</AnchorPane>
+</fx:root>
