@@ -1,0 +1,41 @@
+.start-button {
+    -fx-background-image: url('../imgs/start-takki-1.png');
+    background-image: url('../imgs/start-takki-1.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 256 96;
+	background-size: 256 96;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.start-button:hover,
+.start-button:active,
+.start-button:focus-visible {
+    -fx-background-image: url('../imgs/start-takki-2.png');
+    background-image: url('../imgs/start-takki-2.png');
+}
+
+.score-submit-button {
+    -fx-background-image: url('../imgs/score-button-1.png');
+    background-image: url('../imgs/score-button-1.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 128 64;
+	background-size: 128 64;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.score-submit-button:hover,
+.score-submit-button:active,
+.score-submit-button:focus-visible {
+    -fx-background-image: url('../imgs/score-button-2.png');
+    background-image: url('../imgs/score-button-2.png');
+}

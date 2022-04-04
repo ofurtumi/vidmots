@@ -3,32 +3,36 @@ package files.vidmot;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import files.vinnsla.Map;
 import files.vinnsla.Score;
-import files.vidmot.SceneController;
 
-public class MainController {
+public class GameController {
     @FXML
     private Pane pane;
 
-    @FXML
-    private Label startText;
+    // @FXML
+    // private Label startText;
 
     private Score score = new Score();
     private Label scoreLabel = new Label(score.getScore());
@@ -48,11 +52,9 @@ public class MainController {
 
     private Map map;
 
-    private SceneController SC;
-
     private int counter = 0;
 
-    Image apple = new Image(MainController.class.getResourceAsStream("imgs/apple.png"));
+    Image apple = new Image(GameController.class.getResourceAsStream("imgs/apple.png"));
 
     private ArrayList<ImageView> edges = new ArrayList<>();
 
@@ -64,8 +66,8 @@ public class MainController {
      * @param event músasmell
      */
     @FXML
-    private void handleButtonAction(MouseEvent event) {
-        pane.getChildren().remove(startText);
+    private void handleButtonAction(ActionEvent event) {
+        // pane.getChildren().remove(startText);
         start();
     }
 
@@ -204,7 +206,7 @@ public class MainController {
      * mikilvægasta fallið, frumstillir allt, hreinsar skjáinn,
      * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
      */
-    private void start() {
+    public void start() {
 
         map = new Map();
         isDead = false;
@@ -246,16 +248,16 @@ public class MainController {
     }
 
     private void createEdges() {
-        Image side = new Image(MainController.class.getResourceAsStream("imgs/edge-m.png"));
+        Image side = new Image(GameController.class.getResourceAsStream("imgs/edge-m.png"));
         for (int j = 0; j < 30; j++) {
             ImageView emb = new ImageView(side);
-            emb.setX(32+(j*32));
+            emb.setX(32 + (j * 32));
             emb.setY(992);
             edges.add(emb);
         }
         for (int j = 0; j < 30; j++) {
             ImageView emb = new ImageView(side);
-            emb.setX(32+(j*32));
+            emb.setX(32 + (j * 32));
             emb.setY(0);
             emb.setRotate(180);
             edges.add(emb);
@@ -263,23 +265,23 @@ public class MainController {
         for (int j = 0; j < 30; j++) {
             ImageView emb = new ImageView(side);
             emb.setX(0);
-            emb.setY(32+(j*32));
+            emb.setY(32 + (j * 32));
             emb.setRotate(90);
             edges.add(emb);
         }
         for (int j = 0; j < 30; j++) {
             ImageView emb = new ImageView(side);
             emb.setX(992);
-            emb.setY(32+(j*32));
+            emb.setY(32 + (j * 32));
             emb.setRotate(270);
             edges.add(emb);
         }
-        Image corner = new Image(MainController.class.getResourceAsStream("imgs/edge-e.png"));
+        Image corner = new Image(GameController.class.getResourceAsStream("imgs/edge-e.png"));
         for (int i = 0; i < 4; i++) {
             ImageView ec = new ImageView(corner);
             ec.setX(i < 2 ? 0 : 992);
             ec.setY(i != 0 && i <= 2 ? 992 : 0);
-            ec.setRotate(540 - (i*90));
+            ec.setRotate(540 - (i * 90));
             edges.add(ec);
         }
         pane.getChildren().addAll(edges);
@@ -315,13 +317,18 @@ public class MainController {
         ps.death();
         timeLineController(3);
         counter = 0;
-        
-        startText.setFont(Font.font(16));
-        startText.setPrefWidth(pane.getWidth());
-        startText.setPrefHeight(pane.getHeight());
-        startText.setText(score.saveScore() + "\n Smelltu hér til að byrja annann leik");
-        pane.getChildren().add(startText);
+
+        // startText.setFont(Font.font(16));
+        // startText.setPrefWidth(pane.getWidth());
+        // startText.setPrefHeight(pane.getHeight());
+        // startText.setText(score.saveScore() + "\n Smelltu hér til að byrja annann
+        // leik");
+        // pane.getChildren().add(startText);
 
     }
 
+    public void switchScenes(ActionEvent aE) {
+        Stage s = (Stage) ((Node) aE.getSource()).getScene().getWindow();
+        s.setScene(pane.getScene());
+    }
 }
