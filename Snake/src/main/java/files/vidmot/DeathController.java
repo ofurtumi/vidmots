@@ -1,7 +1,7 @@
 package files.vidmot;
 
-
 import java.io.IOException;
+import java.lang.ModuleLayer.Controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -25,30 +25,31 @@ public class DeathController {
 
     private Score score;
     private final int maxLength = 3;
-    
+
     public void submit(ActionEvent event) {
         System.out.println("nameInput.getText() --> " + nameInput.getText());
-        ScoreObject S1 = new ScoreObject();
-        ScoreObject S2 = new ScoreObject();
-        S1.setNum(5, 9, 3);
-        S2.setNum(0,1,5);
-        playerScoreGP.add(S1, 0, 0);
-        playerScoreGP.add(S2, 1, 0);
+        ScoreObject scoreName = new ScoreObject(nameInput.getText());
+        playerScoreGP.add(scoreName, 0, 0);
     }
 
     public void textCheck() {
         if (nameInput.getText().length() >= maxLength) {
-            nameInput.setText(nameInput.getText().substring(0,maxLength));
+            nameInput.setText(nameInput.getText().substring(0, maxLength));
             nameInput.positionCaret(3);
         }
+    }
+
+    public void sendData(Score score) {
+        this.score = score;
+        ScoreObject scoreScore = new ScoreObject(score);
+        playerScoreGP.add(scoreScore, 1, 0);
     }
 
     public void sceneSwitchGame(ActionEvent event) throws IOException {
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
-
-        Parent game = FXMLLoader.load(getClass().getResource("game-view.fxml"));
-        Scene scene = new Scene(game);
+        FXMLLoader game = new FXMLLoader(getClass().getResource("game-view.fxml"));
+        Scene scene = new Scene(game.load());
         thisStage.setScene(scene);
     }
 

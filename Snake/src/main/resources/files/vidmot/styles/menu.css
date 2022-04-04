@@ -1,0 +1,56 @@
+.anchor {
+    background-image: url('../imgs/menu-grunnur.png');
+    -fx-background-image: url('../imgs/menu-grunnur.png');
+
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 1024 1024;
+	background-size: 1024 1024;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.start {
+    -fx-background-image: url('../imgs/menu-button-start.png');
+    background-image: url('../imgs/menu-button-start.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 448 200;
+	background-size: 448 200;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.start:hover,
+.start:active,
+.start:focus-visible {
+    -fx-background-image: url('../imgs/menu-button-start-pressed.png');
+    background-image: url('../imgs/menu-button-start-pressed.png');
+}
+
+.stats {
+    -fx-background-image: url('../imgs/menu-button-stats.png');
+    background-image: url('../imgs/menu-button-stats.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 448 200;
+	background-size: 448 200;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.stats:hover,
+.stats:active,
+.stats:focus-visible {
+    -fx-background-image: url('../imgs/menu-button-stats-pressed.png');
+    background-image: url('../imgs/menu-button-stats-pressed.png');
+}

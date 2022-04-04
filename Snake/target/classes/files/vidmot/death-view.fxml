@@ -13,9 +13,9 @@
             <Button layoutX="643.0" layoutY="913.0" mnemonicParsing="false" onAction="#sceneSwitchMenu" text="Heim" />
          </children>
       </Pane>
-      <HBox layoutX="256.0" layoutY="64.0" prefHeight="96.0" prefWidth="512.0" styleClass="border">
+      <HBox layoutX="256.0" layoutY="64.0" prefHeight="96.0" prefWidth="512.0">
          <children>
-            <GridPane fx:id="playerScoreGP" prefWidth="512.0">
+            <GridPane fx:id="playerScoreGP" alignment="CENTER" prefWidth="512.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

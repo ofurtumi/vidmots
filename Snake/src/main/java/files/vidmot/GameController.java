@@ -5,24 +5,20 @@ import javafx.animation.Timeline;
 import javafx.animation.Animation.Status;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import files.vinnsla.Map;
 import files.vinnsla.Score;
@@ -31,11 +27,11 @@ public class GameController {
     @FXML
     private Pane pane;
 
-    // @FXML
-    // private Label startText;
+    @FXML
+    private Button startButton;
 
     private Score score = new Score();
-    private Label scoreLabel = new Label(score.getScore());
+    private Label scoreLabel = new Label(score.getScoreString());
 
     private ImageView foodItem;
     private Bounds foodBounds;
@@ -172,7 +168,7 @@ public class GameController {
             // System.out.println("nammi namm :)~");
             pane.getChildren().add(ps.addTailPiece());
             score.plus();
-            scoreLabel.setText(score.getScore());
+            scoreLabel.setText(score.getScoreString());
         }
 
         for (int i = 1; i < ps.getSprites().size(); i++) {
@@ -207,10 +203,10 @@ public class GameController {
      * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
      */
     public void start() {
-
         map = new Map();
         isDead = false;
-        pane.getChildren().clear();
+        pane.getChildren().remove(startButton);
+
         enemies.clear();
         edges.clear();
         addEnemy();
@@ -307,7 +303,6 @@ public class GameController {
             snake s = new snake();
             enemies.add(s);
             s.firstTail();
-            // pane.getChildren().addAll(s.getPieces());
             pane.getChildren().addAll(s.getSprites());
         }
     }
@@ -318,6 +313,25 @@ public class GameController {
         timeLineController(3);
         counter = 0;
 
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        Stage thisStage = (Stage) pane.getScene().getWindow();
+        FXMLLoader death = new FXMLLoader(getClass().getResource("death-view.fxml"));
+        try {
+            Scene scene = new Scene(death.load());
+            DeathController DC = death.getController();
+            DC.sendData(score);
+            thisStage.setScene(scene);
+        } catch (Exception e) {
+            System.out.println("e --> " + e);
+        }
+
         // startText.setFont(Font.font(16));
         // startText.setPrefWidth(pane.getWidth());
         // startText.setPrefHeight(pane.getHeight());
@@ -325,10 +339,5 @@ public class GameController {
         // leik");
         // pane.getChildren().add(startText);
 
-    }
-
-    public void switchScenes(ActionEvent aE) {
-        Stage s = (Stage) ((Node) aE.getSource()).getScene().getWindow();
-        s.setScene(pane.getScene());
     }
 }
