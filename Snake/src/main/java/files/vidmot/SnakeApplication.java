@@ -14,20 +14,9 @@ public class SnakeApplication extends Application {
         FXMLLoader loaderMenu = new FXMLLoader(getClass().getResource("menu-view.fxml"));
         Parent menu = loaderMenu.load();
         stage.setTitle("Snake!");
-        nyrGluggi(stage, menu, "Snake Menu!");
-        // Controller menuController = loaderMenu.getController();
-
-        // FXMLLoader loaderGame = new FXMLLoader(getClass().getResource("game-view.fxml"));
-        // Parent game = loaderGame.load();
-        // new Scene(game, 1024, 1024);
-        // Controller gameController = loaderGame.getController();
-    }
-
-    private void nyrGluggi(Stage s, Parent root, String tit) {
-        s.setTitle(tit);
-        Scene scene = new Scene(root, 1024, 1024);
-        s.setScene(scene);
-        s.show();
+        Scene scene = new Scene(menu, 1024, 1024);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {

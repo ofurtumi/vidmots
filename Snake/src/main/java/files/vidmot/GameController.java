@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import files.vinnsla.Map;
 import files.vinnsla.Score;
+import files.vinnsla.Stats;
 
 public class GameController {
     @FXML
@@ -45,6 +47,9 @@ public class GameController {
     private boolean isDead;
 
     private boolean notPressedThisFrame;
+
+    private Stats stats;
+    private Stats thisGame;
 
     private Map map;
 
@@ -165,10 +170,11 @@ public class GameController {
     private void intersectChecks() {
         if (ps.getHitbox().intersects(foodBounds)) {
             pane.getChildren().remove(foodItem);
-            // System.out.println("nammi namm :)~");
             pane.getChildren().add(ps.addTailPiece());
             score.plus();
-            scoreLabel.setText(score.getScoreString());
+            stats.setApples(1);
+            thisGame.setApples(1);
+            scoreLabel.setText(thisGame.toString());
         }
 
         for (int i = 1; i < ps.getSprites().size(); i++) {
@@ -203,18 +209,33 @@ public class GameController {
      * eyðir öllum óvinum, bætir við einum óvini, býr til nýjann playerSnake
      */
     public void start() {
+        try {
+            stats = new Stats();
+        } catch (Exception e) {
+            System.out.println("new Stats() --> " + e);
+        }
+
+        thisGame = new Stats(true);
+
         map = new Map();
         isDead = false;
-        pane.getChildren().remove(startButton);
+        pane.getChildren().clear();
+
+        scoreLabel.setFont(Font.font(64));
+        scoreLabel.setTranslateX(512);
+        scoreLabel.setTranslateY(512);
+        scoreLabel.setVisible(false);
 
         enemies.clear();
         edges.clear();
         addEnemy();
+        stats.setGames(1);
         ps = new playerSnake();
         ps.firstTail();
 
         pane.getChildren().add(scoreLabel);
         pane.getChildren().addAll(ps.getSprites());
+
         // pane.getChildren().addAll(ps.getHitbox());
         createEdges();
 
@@ -234,9 +255,11 @@ public class GameController {
             if (!isDead && e.getCode() == KeyCode.ESCAPE) {
                 if (t.getStatus() == Status.RUNNING) {
                     timeLineController(2);
-                    System.out.println(map.toString());
-                } else
+                    scoreLabel.setVisible(true);
+                } else {
+                    scoreLabel.setVisible(false);
                     timeLineController(1);
+                }
             }
             e.consume();
 
@@ -286,20 +309,26 @@ public class GameController {
     private void addFood() {
         if (!pane.getChildren().contains(foodItem)) {
             foodItem = new ImageView(apple);
-            int yCoord = ((int) (64 + (Math.random() * 900)));
-            yCoord = yCoord - (yCoord % 16);
-            int xCoord = ((int) (64 + (Math.random() * 900)));
-            xCoord = xCoord - (xCoord % 16);
+            int yCoord = ((int) ((64 + (Math.random() * 832)) / 32)) * 32;
+            int xCoord = ((int) ((64 + (Math.random() * 832)) / 32)) * 32;
 
             foodItem.setX(yCoord);
             foodItem.setY(xCoord);
             foodBounds = foodItem.getBoundsInParent();
             pane.getChildren().add(foodItem);
         }
+
+        // FoodItem fi = new FoodItem();
+        // fi.setX(600);
+        // fi.setY(600);
+        // pane.getChildren().add(fi);
     }
 
     private void addEnemy() {
         if (counter++ % 250 == 0) {
+            stats.setEnemies(1);
+            thisGame.setEnemies(1);
+            scoreLabel.setText(thisGame.toString());
             snake s = new snake();
             enemies.add(s);
             s.firstTail();
@@ -308,18 +337,20 @@ public class GameController {
     }
 
     private void death() {
+        stats.saveStats();
         isDead = true;
         ps.death();
         timeLineController(3);
         counter = 0;
 
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+        // * pásar í smá til þess að gefa notanda sýn yfir það hvað drap
+        // * stundum sést það ekki þannig bara best að beila
+        // try {
+        // Thread.sleep(1000);
+        // } catch (InterruptedException e1) {
+        // // TODO Auto-generated catch block
+        // e1.printStackTrace();
+        // }
 
         Stage thisStage = (Stage) pane.getScene().getWindow();
         FXMLLoader death = new FXMLLoader(getClass().getResource("death-view.fxml"));
@@ -329,15 +360,12 @@ public class GameController {
             DC.sendData(score);
             thisStage.setScene(scene);
         } catch (Exception e) {
-            System.out.println("e --> " + e);
+            System.out.println("death scene --> " + e);
         }
-
-        // startText.setFont(Font.font(16));
-        // startText.setPrefWidth(pane.getWidth());
-        // startText.setPrefHeight(pane.getHeight());
-        // startText.setText(score.saveScore() + "\n Smelltu hér til að byrja annann
-        // leik");
-        // pane.getChildren().add(startText);
-
     }
+
+    // @FXML
+    // private void initialize() {
+    // start();
+    // }
 }

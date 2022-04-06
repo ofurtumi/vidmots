@@ -4,11 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" style="-fx-background-color: #99e550;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.GameController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" style="-fx-background-color: #99e550;" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="files.vidmot.GameController">
    <children>
-      <Button fx:id="startButton" layoutX="384.0" layoutY="464.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="96.0" prefWidth="256.0" styleClass="start-button" stylesheets="@styles/buttons.css">
+      <Button fx:id="startButton" layoutX="384.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="96.0" prefWidth="256.0" styleClass="start-button" stylesheets="@styles/buttons.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
+      <Label layoutX="273.0" layoutY="512.0" prefHeight="204.0" prefWidth="478.0" text="Borðaðu eplin til að stækka og bæta við stigum. Passaðu þig að snerta ekki rauðu nöðrurnar eða þinn eigin hala!" textAlignment="CENTER" wrapText="true" />
    </children>
 </Pane>

@@ -1,6 +1,7 @@
 package files.vidmot;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import files.vinnsla.Score;
@@ -19,7 +20,7 @@ public class ScoreObject extends AnchorPane {
     private String[] alphArr = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r",
             "s", "t", "u", "v", "w", "x", "y", "z" };
 
-    private HashMap<String, Integer> alphabet = new HashMap<String, Integer>();
+    private ArrayList<String> alphabet = new ArrayList<String>();
 
     public ScoreObject(Score score) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("score-card.fxml"));
@@ -35,10 +36,24 @@ public class ScoreObject extends AnchorPane {
         char[] chars = (String.valueOf(score.getScore())).toCharArray();
         setNum(chars);
     }
+    public ScoreObject(int score) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("score-card.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        char[] chars = (String.valueOf(score)).toCharArray();
+        setNum(chars);
+    }
 
     public ScoreObject(String name) {
         for (int i = 0; i < alphArr.length; i++) {
-            alphabet.put(alphArr[i], i);    
+            alphabet.add(alphArr[i]);    
         }
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("score-card.fxml"));
@@ -55,26 +70,23 @@ public class ScoreObject extends AnchorPane {
     }
 
     private void setNum(char[] chars) {
-        gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t" + chars[0] + ".png"))), 2, 0);
-        if (chars.length > 1)
-            gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t" + chars[1] + ".png"))), 1,
-                    0);
-        else
-            gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t0.png"))), 1, 0);
-        if (chars.length > 2)
-            gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t" + chars[2] + ".png"))), 0,
-                    0);
-        else
-            gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t0.png"))), 0, 0);
+        for (int i = 0; i < 3; i++) {
+            if (chars.length > i) {
+                gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t" + chars[chars.length-(1+i)] + ".png"))), 2-i, 0);
+            }
+            else {
+                gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/num/t0.png"))), 2-i, 0);
+            }
+        }
     }
 
     private void setName(String name) {
         for (int i = 0; i < 3; i++) {
-            if (alphabet.containsKey(name.substring(i,i+1))) {
-                gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/alph/" + name.substring(i, i+1) + ".png"))), i, 0);
+            if (name.length() != 0 && alphabet.contains(name.substring(i,i+1).toLowerCase())) {
+                gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/alph/" + name.substring(i, i+1).toLowerCase() + ".png"))), i, 0);
             }
             else {
-                gp.add(new Label(name.substring(i, i+1)), i, 0);
+                gp.add(new ImageView(new Image(ScoreObject.class.getResourceAsStream("imgs/alph/hmm.png"))), i, 0);
             }
         }
     }

@@ -39,3 +39,45 @@
     -fx-background-image: url('../imgs/score-button-2.png');
     background-image: url('../imgs/score-button-2.png');
 }
+
+.restart-button {
+    -fx-background-image: url('../imgs/ta-button-1.png');
+    background-image: url('../imgs/ta-button-1.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 128 64;
+	background-size: 128 64;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.restart-button:hover,
+.restart-button:active,
+.restart-button:focus-visible {
+    -fx-background-image: url('../imgs/ta-button-2.png');
+    background-image: url('../imgs/ta-button-2.png');
+}
+
+.exit-button {
+    -fx-background-image: url('../imgs/exit-button-1.png');
+    background-image: url('../imgs/exit-button-1.png');
+
+    -fx-background-repeat: no-repeat;
+	background-repeat: no-repeat;
+
+	-fx-background-size: 128 64;
+	background-size: 128 64;
+
+	-fx-background-position: center center;
+	background-position: center center;
+}
+
+.exit-button:hover,
+.exit-button:active,
+.exit-button:focus-visible {
+    -fx-background-image: url('../imgs/exit-button-2.png');
+    background-image: url('../imgs/exit-button-2.png');
+}
