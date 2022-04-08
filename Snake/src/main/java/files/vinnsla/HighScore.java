@@ -21,8 +21,10 @@ public class HighScore {
     private ArrayList<Integer> topScores = new ArrayList<Integer>();
 
     public HighScore() throws FileNotFoundException {
-        URL url = getClass().getResource("scores.txt");
-        this.file = new File(url.getPath());
+        File jarPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        String path = jarPath.getParentFile().getAbsolutePath();
+        file = new File(path+"/scores.txt");
+
         Scanner scanner = new Scanner(file);
         String readString = "";
 

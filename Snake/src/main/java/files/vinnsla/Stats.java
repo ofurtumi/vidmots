@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Stats {
@@ -14,11 +17,18 @@ public class Stats {
     private int games;
     private int avarage; // ? = (int)((apples + (specials*5)) / games);
     private boolean single;
+    private String path;
+    private File file;
 
     public Stats() throws FileNotFoundException {
-        URL url = getClass().getResource("stats.txt");
-        File file = new File(url.getPath());
+        File jarPath = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        path = jarPath.getParentFile().getAbsolutePath();
+        // System.out.println("path --> " + path);
+        file = new File(path+"/stats.txt");
+
         Scanner scanner = new Scanner(file);
+        // if (test.hasNext()) System.out.println("test --> " + test.nextInt());
+        // test.close();
 
         this.apples = scanner.nextInt();
         this.specials = scanner.nextInt();
@@ -34,8 +44,8 @@ public class Stats {
         // ? örugglega betra að yfirskrifa til að lenda ekki í ehv overflow
         setAvarage();
         try {
-            URL url = getClass().getResource("stats.txt");
-            File file = new File(url.getPath());
+            // URL url = getClass().getResource("stats.txt");
+            // File file = new File(url.getPath());
             FileWriter fw = new FileWriter(file); // the true will append the new data
             fw.write(this.apples + "\n" + this.specials + "\n" + this.enemies + "\n" + this.games + "\n" + this.avarage);
             fw.close();
