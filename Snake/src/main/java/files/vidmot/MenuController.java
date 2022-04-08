@@ -9,13 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-import files.vidmot.GameController;
-
 import java.io.IOException;
 
 public class MenuController {
     @FXML private Button startButton;
-    @FXML private Button deathButton;
+    @FXML private Button statsButton;
     // @FXML private Button statButton;
     
 
@@ -28,12 +26,15 @@ public class MenuController {
         thisStage.setScene(scene);
     }
 
-    public void switchScenesDeath(ActionEvent event) throws IOException{
+    public void switchScenesStats(ActionEvent event) throws IOException{
+        System.out.println("test");
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
 
-        Parent death = FXMLLoader.load(getClass().getResource("death-view.fxml"));
-        Scene scene = new Scene(death);
+        FXMLLoader stats = new FXMLLoader(getClass().getResource("stat-view.fxml"));
+        Scene scene = new Scene(stats.load());
+        StatsView SV = stats.getController();
+        SV.setsStats();
         thisStage.setScene(scene);
     }
 }
