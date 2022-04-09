@@ -27,9 +27,6 @@ public class Stats {
         file = new File(path+"/stats.txt");
 
         Scanner scanner = new Scanner(file);
-        // if (test.hasNext()) System.out.println("test --> " + test.nextInt());
-        // test.close();
-
         this.apples = scanner.nextInt();
         this.specials = scanner.nextInt();
         this.enemies = scanner.nextInt();
@@ -85,8 +82,8 @@ public class Stats {
         if (this.single) {
             return "epli:" + this.apples + "\nofur-epli:" + this.specials + "\nnöðrur:" + this.enemies;
         }
-        return "apples:" + this.apples + "\nspecials:" + this.specials + "\nenemies:" + this.enemies + "\ngames:"
-                + this.games + "\navg score:" + this.avarage;
+        return "epli:" + this.apples + "\nnöðrur:" + this.enemies + "\nfjöldi leikja:"
+                + this.games + "\nmeðaltal:" + this.avarage;
     }
 
     public int getApples() {

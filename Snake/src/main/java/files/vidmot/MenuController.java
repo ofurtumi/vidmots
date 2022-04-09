@@ -27,7 +27,6 @@ public class MenuController {
     }
 
     public void switchScenesStats(ActionEvent event) throws IOException{
-        System.out.println("test");
         Node node = (Node) event.getSource();
         Stage thisStage = (Stage) node.getScene().getWindow();
 
