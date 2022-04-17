@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[icelandic]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{minted}
+
+
+\graphicspath{ {./imgs} }
+\title{Snake - Viðmótsforritun}
+\author{ttb3@hi.is}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+
+\section*{Gagnvirkniskröfur notenda}
+\subsection*{1.}
+\subsubsection*{Gagnvirkni}
+    Notandi getur spilað Snake þar sem snákurinn getur borðað mat,stækkað og liðast, 
+    snákurinn deyr svo ef hann snertir eitursnák eða klessir á sinn eiginn líkama.
+\subsubsection*{Lýsing á verkefni} 
+    Í fyrri útgáfu af Snake var aðeins hægt að lengjast en ekki liðast. 
+    Með viðbættri liðunarhegðun þarf að breyta stjórnun á snáknum, 
+    athuga þarf í hvaða átt snákurinn stefnir og koma í veg fyrir að hann snúi við.
+\subsubsection*{Staða kröfu}
+    Krafa komin
+
+\subsection*{2.}
+\subsubsection*{Gagnvirkni}
+Notandi getur skráð stigin sín niður ásamt þremur einkennisstöfum,
+eins og í gömlum spilakössum. Þessi stig eiga að geymast á milli leikja.
+
+\subsubsection*{Lýsing á verkefni}
+Hingað til hefur stigafjöldi verið vistaður sjálfkrafa og með enga vísun í notenda.
+stigin voru aðeins til staðar frá því að leikurinn hafðist og þangað til að honum var lokað,
+ekkert var geymt á milli keyrslna.
+\subsubsection*{Staða kröfu}
+    Krafa komin
+
+\subsection*{3.}
+\subsubsection*{Gagnvirkni}
+Notandi getur hefnt sín á eitursnákum, öðru hvoru er maturinn sem birtist 'sérstakur'
+á þann hátt að þegar notandi borðar sérstaka matinn, 
+getur hann ekki dáið og ef snákurinn rekst á eitursnák deyr eitursnákurinn.
+Mjög svipuð pæling og stóru doppurnar í pac-man og stjörnur í super mario.
+
+\subsubsection*{Lýsing á verkefni}
+Eins og er í leiknum eru eitursnákarnir bara til staðar til að angra og hægja á leiknum.
+Eftir nokkrar mínútur af leik voru komnir svo margir eitursnákar að varla var hægt að spila lengur.
+Með þessari viðbót ætti að vera hægt að spila lengur, passa þarf bara að gefa ekki of mikið af sérstökum mat.
+\subsubsection*{Staða kröfu}
+    Útfærsla tókst ekki vegna þess að tími var ekki nægilegur
+
+\subsection*{4.}
+\subsubsection*{Gagnvirkni}
+Notandi getur pásað leik með mús, space eða escape. 
+Þegar notandi pásar leikinn fær viðkomandi yfirlit yfir hversu langur tími er liðinn,
+hversu mikinn mat er búið borða, hvar hann er í röðinni með stig á þessum tímapunkti, 
+hversu margir eitursnákar hafa birst, hversu margir eitursnákar hafa dáið og hversu mikið af sérstökum mat er búið að borða.
+
+\subsubsection*{Lýsing á verkefni}
+Í augnablikinu er bara hægt að pása með músarsmelli, því þarf að breyta í esc og space. 
+Þegar notandi pásar núna gerist ekkert nema að leikurinn frýs. Bætist við öll gögnin um leikinn sem eru talin upp í gegnvirknispartinum.
+
+\subsubsection*{Staða kröfu}
+    Krafa hálf komin, sleppti því að bæta við space og tók músina út því ég var alltaf að ýta á hana óvart
+
+\subsection*{5.}
+\subsubsection*{Gagnvirkni}
+Startskjár, 
+bæta við almennilegum startskjá þar sem hægt er að fá yfirlit yfir stig 
+og hugsanlega einhver auka skemmtileg gögn.
+
+\subsubsection*{Lýsing á verkefni}
+Leikurinn eins og er notast við startskjá sem er illa gerður, 
+eina sem hægt er að sjá er smá texti og eina sem hægt er að gera er að byrja leikinn.
+Bæta við stigalista og betra útliti.
+
+\subsubsection*{Staða kröfu}
+    Krafa komin
+
+\section*{Útlits- og hönnunarkröfur}
+Leikurinn eins og hann lítur út núna er forljótur.
+\subsection*{1.}
+\subsubsection*{Útlitskröfur}
+Allir leikjahlutir eiga að notast við sprites frekar en einföld form gerð í javafx.
+Það þarf ekki að vera sjúklegur munur á þessum spritum, 
+eitur og player snákar geta litið eins út nema með mismunandi litum.
+
+\subsubsection*{Lýsing á kröfu}
+Núna eru snákarnir bara kassar með útlínur og maturinn rauðir hringir, mjög ljótt.
+Með þessari kröfu mun leikurinn byrja að líta út eins og eitthvað sem er ekki sett saman af smábarni.
+
+\subsubsection*{Staða kröfu}
+krafa komin
+
+\end{document}
