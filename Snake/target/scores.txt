@@ -1,1 +1,1 @@
-ass:10,tit:5,poo:2,ttb:12,lol:1,tum:4,woo:2,poo:12,ttb:29,poo:4,cum:24,ght:2,GHÞ:9,GHT:5,GHT:20,:3,BEX:5,BEX:8,ttb:11,ttb:22,TTb:32
+ass:10,tit:5,poo:2,ttb:12,lol:1,tum:4,woo:2,poo:12,ttb:29,poo:4,cum:24,ght:2,GHÞ:9,GHT:5,GHT:20,:3,BEX:5,BEX:8,ttb:11,ttb:22,TTb:32,asd:12,aro:1,tum:10
